@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Error - " + ViewData["ErrorCode"];
+}
+<div class="row">
+    <div class="container__wrapper">
+        <div class="col-xs-12 article">
+            <br><h1>Ошибка @ViewData["ErrorCode"] - @ViewData["ErrorMessage"]</h1>
+            <div class="error--404"><p>Ошибка @ViewData["ErrorCode"] означает, что страница, на которую вы перешли, не доступна на данный момент.<br>Возможно, она была перенесена или удалена, либо вы ввели неправильный адрес</p><p><strong>Попробуйте следующее:</strong><br><ul><li> Перезагрузите страницу.<br></li><li> Проверьте, что в адресе нет ошибок.<br></li><li> Очистите кэш браузера.</li></ul></p></div>
+        </div>
+    </div>
+</div>

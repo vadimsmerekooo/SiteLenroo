@@ -1,0 +1,28 @@
+﻿@page
+@model AddUserModel
+@{
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-page-handler="AddedUser" class="register-form" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" asp-for="Input.Login">Логин</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="first_input" placeholder="Логин" asp-for="Input.Login" maxlength="50">
+        </div>
+        <span asp-validation-for="Input.Login" class="col col-form-label"></span>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label" asp-for="Input.Password">Пароль</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" id="first_input" placeholder="Пароль" asp-for="Input.Password" maxlength="50">
+        </div>
+        <span asp-validation-for="Input.Password" class="col col-form-label"></span>
+    </div>
+
+    <button class="btn btn-primary">Добавить пользователя</button>
+</form>

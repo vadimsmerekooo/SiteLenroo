@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @* Metatags Partial *@
+    <partial name="Partial/MetatagsPartial.cshtml" />
+
+    @* Css Partial *@
+    <partial name="Partial/CssPartial.cshtml" />
+
+</head>
+<body class="has-slideshow">
+    <div class="container">
+        @* Header Partial *@
+        <partial name="Partial/HeaderPartial.cshtml" />
+
+        @* Partial Set Coockie *@
+        <partial name="_CookieConsentPartial" />
+
+
+        @* Body partial *@
+        @RenderBody()
+
+
+        <hr />
+
+
+        @* Footer Partial *@
+        <partial name="Partial/FooterPartial.cshtml" />
+
+    </div>
+
+
+    <partial name="Partial/ScriptsPartial.cshtml" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿@page
+@model UserListModel
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<h2>@ViewData["Title"]</h2>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<table class="table">
+    @foreach (var user in Model._userList)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-page="./Edit" asp-route-userid="@user.Id">Права доступа</a>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-danger" asp-page-handler="Delete" asp-route-userid="@user.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td><a class="btn btn-sm btn-primary" asp-page="./AddUser">Добавить нового пользователя</a></td>
+    </tr>
+</table>

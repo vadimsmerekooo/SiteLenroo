@@ -1,0 +1,66 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>@ViewData["Title"] - @Config.OrganizationShort</title>
+
+
+<script type="text/javascript">
+    function loadFont(fontName, woffUrl, woff2Url) {
+        var nua = navigator.userAgent;
+        var noSupport = !window.addEventListener // IE8 and below
+            || (nua.match(/(Android (2|3|4.0|4.1|4.2|4.3))|(Opera (Mini|Mobi))/) && !nua.match(/Chrome/))
+
+        if (noSupport) {
+            return;
+        }
+     
+        var LS = {};
+
+        try {
+            LS = localStorage || {};
+        } catch (ex) {
+        }
+
+        var localStoragePrefix = 'x-font-' + fontName;
+        var localStorageUrlKey = localStoragePrefix + '-url';
+        var localStorageCssKey = localStoragePrefix + '-css';
+        var storedFontUrl = LS[localStorageUrlKey];
+        var storedFontCss = LS[localStorageCssKey];
+
+        var styleElement = document.createElement('style');
+        styleElement.rel = 'stylesheet';
+        document.head.appendChild(styleElement);
+
+        if (storedFontCss && (storedFontUrl === woffUrl || storedFontUrl === woff2Url)) {
+            styleElement.textContent = storedFontCss;
+        } else {
+            var url = (woff2Url && supportsWoff2())
+                ? woff2Url // WOFF2 URL provided and supported
+                : woffUrl; // only WOFF support
+
+            var request = new XMLHttpRequest();
+
+            request.open('GET', url);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    LS[localStorageUrlKey] = url;
+                    LS[localStorageCssKey] = styleElement.textContent = request.responseText;
+                }
+            };
+            request.send();
+        }
+
+        function supportsWoff2() {
+            if (!window.FontFace) {
+                return false;
+            }
+
+            var f = new FontFace('t', 'url("data:application/font-woff2,data:application/font-woff2;base64,d09GMgABAAAAAADcAAoAAAAAAggAAACWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABk4ALAoUNAE2AiQDCAsGAAQgBSAHIBtvAcieB3aD8wURQ+TZazbRE9HvF5vde4KCYGhiCgq/NKPF0i6UIsZynbP+Xi9Ng+XLbNlmNz/xIBBqq61FIQRJhC/+QA/08PJQJ3sK5TZFMlWzC/iK5GUN40psgqvxwBjBOg6JUSJ7ewyKE2AAaXZrfUB4v+hze37ugJ9d+DeYqiDwVgCawviwVFGnuttkLqIMGivmDg") format("woff2")', {});
+            f.load();
+
+            return f.status === 'loading';
+        }
+    }
+
+    loadFont('fonts', '/vs/2017/css/fonts-woff.css');
+</script>

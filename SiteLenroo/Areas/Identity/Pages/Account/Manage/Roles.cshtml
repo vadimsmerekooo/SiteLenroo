@@ -1,0 +1,26 @@
+﻿@page
+@model RolesModel
+@{
+    ViewData["Title"] = "Управление ролями";
+}
+
+<h2>Список ролей</h2>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+
+<table class="table">
+    @foreach (var role in Model._roles)
+    {
+        <tr>
+            <td>@role.Name</td>
+            <td>
+                <form asp-page-handler="Delete" asp-route-id="@role.Id" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-page="./Create">Добавить роль</a>
+<a asp-page="./UserList">Список пользователей</a>

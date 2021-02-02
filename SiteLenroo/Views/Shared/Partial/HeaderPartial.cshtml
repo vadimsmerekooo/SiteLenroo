@@ -1,0 +1,160 @@
+﻿@{
+    List<AspNetTree> treeList = new SiteLenrooContext2().AspNetTree.ToList();
+    List<AspNetTreeMain> mainTreelist = new SiteLenrooContext2().AspNetTreeMain.ToList();
+}
+<div class="row header__languege">
+    <div class="col-xs-12 header__line">
+        <div class="container__wrapper">
+            <div class="header__switcher pull-right">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row header">
+
+
+    <div class="header__container clearfix">
+
+        <div class="container__wrapper">
+            <div class="col-xs-9 col-sm-5">
+                <a href="/" class="header__logo">
+                    <div class="header__logo-text">
+                        Центр для обеспечения деятельности учреждений образования г.Гродно
+                    </div>
+                </a>
+            </div>
+
+
+            <!--<div class="col-xs-3 header__weather"></div>-->
+            <div class="col-xs-3 col-sm-3 header__weather">
+                <div class="header__burger-menu-link"></div>
+            </div>
+
+            <div class="row header__burger-menu">
+                <div class="col-xs-3">
+                    <a href="/special/" class="header__link header__icon header__special"></a>
+                </div>
+                <div class="col-xs-9">
+                    <form class="form-vertical clearfix header__search-form" action="/search/"
+                          method="GET" id="search">
+                        <input type="text" class="form-control header__search-field" name="text" value=""
+                               autocomplete="off" placeholder="Поиск по сайту">
+                        <input type="hidden" name="searchid" value="2292145">
+                        <input type="submit" class="search-button header__search-btn" name="search-button" value="">
+                    </form>
+                </div>
+
+                <div id="section-nav" class="col-xs-12 header__burger-menu-elem">
+                    <div class="submenu__background">
+                        <a class="submenu__elem"
+                           href="#" title="О Гродно">
+                            О Гродно
+                        </a>                    <a class="submenu__elem"
+                                                   href="#" title="Власть">
+                            Власть
+                        </a>                    <a class="submenu__elem"
+                                                   href="#" title="Экономика">
+                            Экономика
+                        </a>                    <a class="submenu__elem"
+                                                   href="#" title="Одно окно">
+                            Одно окно
+                        </a>                    <a class="submenu__elem"
+                                                   href="#" title="Образование">
+                            Образование
+                        </a>                    <a class="submenu__elem"
+                                                   href="#" title="Гражданам">
+                            Гражданам
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-1 header__auth-container--width">
+
+
+            </div>
+
+
+            <div class="col-sm-1 header__special-container--width">
+                <div class="header__link-wrapper">
+                    <a href="/special/" class="header__link header__icon header__special"
+                       style="margin-left: 20px;">
+                        Версия для<br> слабовидящих
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="col-sm-3 header__search-container--width">
+                <form class="form-vertical clearfix header__search-form" action="/ext-search/" method="GET" id="search1">
+                    <input type="text" class="form-control header__search-field" name="text" value=""
+                           autocomplete="off" placeholder="Поиск по сайту">
+                    <input type="hidden" name="searchid" value="2292145">
+                    <input type="submit" class="search-button header__search-btn" name="search-button" value="">
+                </form>
+            </div>
+
+            <div class="col-sm-1 header__sitemap-container--width">
+                <div class="header__link-wrapper">
+                    <a href="/info/site-map/" class="header__link header__sitemap">Карта сайта</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="main-menu">
+
+        <div class="main-menu__nav container__wrapper">
+            <ul class="main-menu__nav-list clearfix">
+                @foreach (AspNetTreeMain mainTreeItem in mainTreelist)
+                {
+                    <li><a href="@mainTreeItem.Url" class="main-menu__nav--has_dropdown about" data-content="@mainTreeItem.Id">@mainTreeItem.Title<span class="caret"></span></a></li>
+                }
+            </ul>
+        </div>
+        <div class="main-menu__dropdown-wrapper">
+            <div class="main-menu__dropdown-list">
+                <ul>
+                    @foreach (AspNetTreeMain mainTreeItem in mainTreelist)
+                    {
+                        <li id="@mainTreeItem.Id" class="main-menu__dropdown">
+                            <div class="content">
+                                <ul>
+                                    @foreach (AspNetTree treeItem in treeList.Where(t => t.ParentMain == mainTreeItem.Id && t.Parent == 0))
+                                    {
+                                        <li>
+                                            <a href="@treeItem.Url">@treeItem.Title</a>
+                                            <ul>
+                                                @foreach (var item in treeList.Where(t => t.Parent == treeItem.Id))
+                                                {
+                                                    <li>
+                                                        <a href="@item.Url">@item.Title</a>
+                                                        <ul>
+                                                            @foreach (var item2 in treeList.Where(t => t.Parent == item.Id))
+                                                            {
+                                                                <li>
+                                                                    <a href="@item2.Url">@item2.Title</a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <div class="bg__layer" aria-hidden="true"></div>
+            </div>
+        </div>
+    </div>
+</div>

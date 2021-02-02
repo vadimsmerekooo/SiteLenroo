@@ -1,0 +1,62 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Новости";
+    SiteLenrooContext2 _context = new SiteLenrooContext2();
+}
+
+<h4>@ViewData["Title"]</h4>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Изображение</th>
+                <th scope="col">Заголовок</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Просмотры</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Главная новость</th>
+                <th scope="col">Раздел</th>
+                <th scope="col">Категория</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var newsItem in _context.AspNetNews.Where(news => !news.Blocked).ToList())
+            {
+            <tr class="text-center">
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@newsItem.Id</a></th>
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url"><img src="@_context.AspNetPhoto.FirstOrDefault(n => n.Id == newsItem.Id).Photo" /></a></th>
+
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@newsItem.Title</a></th>
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@newsItem.Date</a></th>
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@newsItem.Watching</a></th>
+                <th scope="row">@newsItem.Blocked</th>
+                <th scope="row">@newsItem.MainNews</th>
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@_context.AspNetTag?.FirstOrDefault(t => t.Id == newsItem.Tag)?.Tag</a></th>
+                <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@_context.AspNetCategory?.FirstOrDefault(t => t.Id == newsItem.Category)?.Category</a></th>
+
+                <th scope="row"><a class="text-primary" asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Id">Просмотреть</a></th>
+                @if (!newsItem.Blocked)
+                {
+                    <th scope="row"><a class="text-danger" asp-page-handler="BlockNews" asp-route="@newsItem.Id">Заблокировать</a></th>
+                }
+                else
+                {
+                    <th scope="row"><a class="text-success" asp-page-handler="UnblockNews" asp-route="@newsItem.Id">Разблокировать</a></th>
+                }
+
+                <th scope="row"><a asp-page-handler="DeleteNews" asp-route="@newsItem.Id" class="text-danger">Удалить</a></th>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

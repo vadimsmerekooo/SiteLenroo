@@ -13,5 +13,8 @@ namespace SiteLenroo
         public static string Email { get; set; }
         public static string Adress { get; set; }
         public static string IndexPost { get; set; }
+        public static string DirectorDadName { get; set; }
+        public static string DirectorLastName { get; set; }
+        public static string DirectorFirstName { get; set; }
     }
 }

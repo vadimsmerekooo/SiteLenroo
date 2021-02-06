@@ -11,124 +11,80 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
 {
-    [Authorize(Policy = "writepolicy")]
+    [Authorize(Roles = "admin, moderator")]
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<LenrooUser> _userManager;
-        private readonly SignInManager<LenrooUser> _signInManager;
-
-        public RoleManager<IdentityRole> roleManagers;
-
-        public IndexModel(
-            UserManager<LenrooUser> userManager,
-            SignInManager<LenrooUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            roleManagers = roleManager;
-        }
-
-        public string Username { get; set; }
-
-        public bool IsEmailConfirmed { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
+        SiteLenrooContext2 _context = new SiteLenrooContext2();
 
-        [BindProperty]
-        public InputModel Input { get; set; }
 
-        public class InputModel
+        public async Task<IActionResult> OnGetDeleteNewsAsync(int newsId)
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
-        }
-
-        public async Task<IActionResult> OnGetAsync()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            if (!_context.AspNetNews.Any(n => n.Id == newsId))
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                StatusMessage = "Ошибка. Новость не найдена в базе данных.";
+                return Page();
+            }
+            AspNetNews news = _context.AspNetNews.FirstOrDefault(n => n.Id == newsId);
+            try
+            {
+                _context.AspNetNews.Remove(news);
+                await _context.SaveChangesAsync();
+                StatusMessage = "Новость успешно удалена.";
+            }
+            catch
+            {
+                StatusMessage = "Ошибка при удалении новости.";
             }
 
-            var userName = await _userManager.GetUserNameAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
-
-            Input = new InputModel
+            return Page();
+        }
+        public async Task<IActionResult> OnGetBlockNewsAsync(int newsId)
+        {
+            if (!_context.AspNetNews.Any(n => n.Id == newsId))
             {
-                Email = email,
-                PhoneNumber = phoneNumber
-            };
+                StatusMessage = "Ошибка. Новость не найдена в базе данных.";
+                return Page();
+            }
+            AspNetNews news = _context.AspNetNews.FirstOrDefault(n => n.Id == newsId);
+            try
+            {
+                _context.AspNetNews.FirstOrDefault(n => n.Id == newsId).Blocked = true;
+                await _context.SaveChangesAsync();
+                StatusMessage = "Новость успешно заблокирована.";
+            }
+            catch
+            {
+                StatusMessage = "Ошибка при блокировке новости.";
+            }
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            return Page();
+        }
+        public async Task<IActionResult> OnGetUnblockNewsAsync(int newsId)
+        {
+            if (!_context.AspNetNews.Any(n => n.Id == newsId))
+            {
+                StatusMessage = "Ошибка. Новость не найдена в базе данных.";
+                return Page();
+            }
+            AspNetNews news = _context.AspNetNews.FirstOrDefault(n => n.Id == newsId);
+            try
+            {
+                _context.AspNetNews.FirstOrDefault(n => n.Id == newsId).Blocked = false;
+                await _context.SaveChangesAsync();
+                StatusMessage = "Новость успешно разблокирована.";
+            }
+            catch
+            {
+                StatusMessage = "Ошибка при разблокировке новости.";
+            }
+
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
-                if (!setEmailResult.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
-                }
-            }
-
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
-                }
-            }
-
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
-        }
-
-        public async Task<IActionResult> OnPostSendVerificationEmailAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            return RedirectToPage();
-        }
     }
 }

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SiteLenroo.Models;
+using System;
 using System.Collections.Generic;
 
-namespace SiteLenroo.Models
+namespace SiteLenroo
 {
     public partial class AspNetNews
     {

@@ -4,12 +4,20 @@
 }
 
 
-<ul class="nav nav-pills nav-stacked">
+<ul class="nav nav-pills nav-stacked head__text-link">
     <li class="@ManageNavPages.IndexNavClass(ViewContext)">
         <a asp-page="./Index">Новости</a>
         <ul class="@ManageNavPages.IndexNavClass(ViewContext)">
             <li>
                 <a asp-page="./AddedNews">Добавить новость</a>
+            </li>
+        </ul>
+    </li>
+    <li class="@ManageNavPages.PhotoNavClass(ViewContext)">
+        <a asp-page="Photo">Фото и изображения</a>
+        <ul class="@ManageNavPages.AddPhotoNavClass(ViewContext)">
+            <li>
+                <a asp-page="./UploadPhoto">Добавить фото или изображение</a>
             </li>
         </ul>
     </li>

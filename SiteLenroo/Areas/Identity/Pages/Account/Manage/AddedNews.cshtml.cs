@@ -13,8 +13,6 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public string ReturnUrl { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
         [TempData]

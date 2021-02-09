@@ -40,17 +40,17 @@
                 <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@_context.AspNetTag?.FirstOrDefault(t => t.Id == newsItem.Tag)?.Tag</a></th>
                 <th scope="row"><a asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">@_context.AspNetCategory?.FirstOrDefault(t => t.Id == newsItem.Category)?.Category</a></th>
 
-                <th scope="row"><a class="text-primary" asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Id">Просмотреть</a></th>
+                <th scope="row"><a class="text-primary" asp-controller="News" asp-action="NewsDetailes" asp-route="@newsItem.Url">Просмотреть</a></th>
                 @if (!newsItem.Blocked)
                 {
-                    <th scope="row"><a class="text-danger" asp-page-handler="BlockNews" asp-route="@newsItem.Id">Заблокировать</a></th>
+                    <th scope="row"><a class="text-danger" asp-page-handler="BlockNews" asp-route-newsId="@newsItem.Id">Заблокировать</a></th>
                 }
                 else
                 {
-                    <th scope="row"><a class="text-success" asp-page-handler="UnblockNews" asp-route="@newsItem.Id">Разблокировать</a></th>
+                    <th scope="row"><a class="text-success" asp-page-handler="UnblockNews" asp-route-newsId="@newsItem.Id">Разблокировать</a></th>
                 }
 
-                <th scope="row"><a asp-page-handler="DeleteNews" asp-route="@newsItem.Id" class="text-danger">Удалить</a></th>
+                <th scope="row"><a asp-page-handler="DeleteNews" asp-route-newsId="@newsItem.Id" class="text-danger">Удалить</a></th>
             </tr>
             }
         </tbody>

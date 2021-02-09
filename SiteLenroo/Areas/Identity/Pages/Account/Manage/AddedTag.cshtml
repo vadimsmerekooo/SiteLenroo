@@ -1,0 +1,16 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.AddedTagModel
+@{
+    ViewData["Title"] = "Добавление тега";
+}
+<h5>@ViewData["Title"]</h5>
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<form asp-page-handler="Create" method="post">
+    <div class="form-group">
+        <label for="tag">Новый тег</label>
+        <input name="tag" class="form-control" required=""/>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+    <a class="btn btn-danger" asp-page="./Tags">Отмена</a>
+</form>

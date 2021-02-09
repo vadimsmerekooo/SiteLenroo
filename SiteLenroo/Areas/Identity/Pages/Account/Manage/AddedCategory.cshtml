@@ -1,0 +1,16 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.AddedCategoryModel
+@{
+    ViewData["Title"] = "Добавление категории";
+}
+<h5>@ViewData["Title"]</h5>
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<form asp-page-handler="Create" method="post">
+    <div class="form-group">
+        <label for="cat">Новая категория</label>
+        <input name="cat" class="form-control" required="" />
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+    <a class="btn btn-danger" asp-page="./Categorys">Отмена</a>
+</form>

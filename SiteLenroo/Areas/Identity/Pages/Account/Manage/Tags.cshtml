@@ -1,0 +1,38 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.TagsModel
+@{
+    ViewData["Title"] = "Список тэгов";
+}
+<h5>@ViewData["Title"]</h5>
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Тег</th>
+                <th scope="col">Количество постов с тегом</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AspNetTag tagItem in Model.tags)
+            {
+            <tr class="text-center">
+                <th scope="row">@tagItem.Id</th>
+                <th scope="row">@tagItem.Tag</th>
+                <th scope="row">@Model._context.AspNetNews.Count(n => n.Tag == tagItem.Id) </th>
+                @if (@Model._context.AspNetNews.Count(n => n.Tag == tagItem.Id) == 0)
+                {
+                    <th scope="row"><a asp-page-handler="DeleteTag" asp-route-tagId="@tagItem.Id" class="text-danger">Удалить</a></th>
+                }
+                else
+                {
+                    <th scope="row">Некоторые новости содержат данный тег, и не может быть удален! Для удаления тега, удалите все новости, которые содержат данный тег!</th>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

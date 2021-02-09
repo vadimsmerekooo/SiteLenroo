@@ -2,6 +2,7 @@
 @model SiteLenroo.Areas.Identity.Pages.Account.Manage.PhotoModel
 @{
     ViewData["Title"] = "Фото/изображения";
+
 }
 <h5>@ViewData["Title"]</h5>
 
@@ -17,6 +18,7 @@
                 <th scope="col"></th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (AspNetPhoto photoItem in Model.photo)
             {
@@ -25,7 +27,14 @@
                     <th scope="row"><img src="@photoItem.Photo" width="150px" height="100px" /></th>
                     <th scope="row">@photoItem.Title</th>
                     <th scope="row">@photoItem.DateAdd</th>
-                    <th scope="row"><a asp-page-handler="DeletePhoto" asp-route-id="@photoItem.Id" class="text-danger">Удалить</a></th>
+                    @if (Model._context.AspNetNews.Count(n => n.PreviewPhoto == photoItem.Id) == 0)
+                    {
+                        <th scope="row"><a asp-page-handler="DeletePhoto" asp-route-id="@photoItem.Id" class="text-danger">Удалить</a></th>
+                    }
+                    else
+                    {
+                        <th scope="row">Некоторые новости содержат данное фото, и не могут быть удалены! Для удаления фото, удалите все новости, которые содержат данное фото!</th>
+                    }
                 </tr>
             }
         </tbody>

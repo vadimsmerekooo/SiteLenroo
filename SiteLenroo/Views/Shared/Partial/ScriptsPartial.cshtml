@@ -1,4 +1,4 @@
-﻿<!-- Yandex.Metrika counter -->
+﻿
 <script type="text/javascript">
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function () {
@@ -31,8 +31,6 @@
 <noscript>
     <div><img src="~//mc.yandex.ru/watch/14151649" style="position:absolute; left:-9999px;" alt="" /></div>
 </noscript>
-<!-- /Yandex.Metrika counter -->
-<!-- Sputnik counter -->
 <script type="text/javascript">
     (function (d, t, p) {
         var j = d.createElement(t);
@@ -44,16 +42,9 @@
         s.parentNode.insertBefore(j, s);
     })(document, "script", document.location.protocol);
 </script>
-<!-- /Sputnik counter -->
-</div><!--[if (gt IE 8)]><!-->
 <script src="~/vs/2017/js/jquery-2.2.4.min.js"></script>
-<!--<![endif]-->
-<!--[if (lte IE 8)]>
-<script src="~/vs/2017/js/jquery-1.12.4.min.js"></script>
-<![endif]-->
 <script src="~/vs/2017/js/bootstrap.min.js"></script>
 <script src="~/vs/2017/js/jquery.form.min.js"></script>
-<!--<script src="~/vs/2017/js/owl.carousel.min.js"></script>-->
 <script src="~/vs/2017/js/owl.carousel.js"></script>
 <script src="~/vs/2017/js/menu.js"></script>
 <script src="~/vs/2017/js/main.js"></script>
@@ -98,4 +89,39 @@
             }
         });
     });
+</script>
+<script>
+    function updateTags() {
+        $("#inputGroupSelectTags").load('@Url.Action("UpdateTags", "UpdateSelect")');
+    }
+    function updatePhoto() {
+        $("#inputGroupSelectPhoto").load('@Url.Action("UpdatePhoto", "UpdateSelect")');
+    }
+    function updateCategory() {
+        $("#inputGroupSelectCategory").load('@Url.Action("UpdateCategory", "UpdateSelect")');
+    }
+</script>
+<script type="text/javascript">
+    document.onkeyup = function (e) {
+        if (e.target.id != 'first_input') return;
+        else second_input.value = generate_url(first_input.value);
+    }
+    function generate_url(str) {
+        var url = str.replace(/[\s]+/gi, '-');
+        url = translit(url);
+        url = url.replace(/[^0-9a-z_\-]+/gi, '').toLowerCase();
+        return url;
+    }
+
+    function translit(str) {
+        var ru = ("А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я").split("-")
+        var en = ("A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch-'-'-Y-y-'-'-E-e-YU-yu-YA-ya").split("-")
+        var res = '';
+        for (var i = 0, l = str.length; i < l; i++) {
+            var s = str.charAt(i), n = ru.indexOf(s);
+            if (n >= 0) { res += en[n]; }
+            else { res += s; }
+        }
+        return res;
+    }
 </script>

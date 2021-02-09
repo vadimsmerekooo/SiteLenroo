@@ -2,28 +2,63 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-
+<style>
+    .child-ul{
+        margin-left: 30px;
+    }
+    .child-hr hr{
+        margin-bottom: 0;
+        margin-top: 0;
+        background-color: #000000;
+        opacity: 1;
+    }
+</style>
 
 <ul class="nav nav-pills nav-stacked head__text-link">
     <li class="@ManageNavPages.IndexNavClass(ViewContext)">
         <a asp-page="./Index">Новости</a>
-        <ul class="@ManageNavPages.IndexNavClass(ViewContext)">
-            <li>
+        <ul class="nav nav-pills nav-stacked head__text-link child-ul">
+            <li class="@ManageNavPages.AddedNewsNavClass(ViewContext)">
                 <a asp-page="./AddedNews">Добавить новость</a>
             </li>
         </ul>
     </li>
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
     <li class="@ManageNavPages.PhotoNavClass(ViewContext)">
         <a asp-page="Photo">Фото и изображения</a>
-        <ul class="@ManageNavPages.AddPhotoNavClass(ViewContext)">
-            <li>
+        <ul class="nav nav-pills nav-stacked head__text-link child-ul">
+            <li class="@ManageNavPages.UploadPhotoNavClass(ViewContext)">
                 <a asp-page="./UploadPhoto">Добавить фото или изображение</a>
             </li>
         </ul>
     </li>
-
-
-
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
+    <li class="@ManageNavPages.TagsNavClass(ViewContext)">
+        <a asp-page="Tags">Тэги</a>
+        <ul class="nav nav-pills nav-stacked head__text-link child-ul">
+            <li class="@ManageNavPages.AddTagsNavClass(ViewContext)">
+                <a asp-page="./AddedTag">Добавить тэг</a>
+            </li>
+        </ul>
+    </li>
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
+    <li class="@ManageNavPages.CategoryesNavClass(ViewContext)">
+        <a asp-page="Categorys">Категории</a>
+        <ul class="nav nav-pills nav-stacked head__text-link child-ul">
+            <li class="@ManageNavPages.AddCategoryesNavClass(ViewContext)">
+                <a asp-page="./AddedCategory">Добавить категорию</a>
+            </li>
+        </ul>
+    </li>
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
     @if (User.IsInRole("admin"))
     {
         <li class="@ManageNavPages.RolesNavClass(ViewContext)"><a asp-page="./Roles">Управление ролями</a></li>

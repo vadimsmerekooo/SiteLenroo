@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Главная";
+    SiteLenrooContext2 _context = new SiteLenrooContext2();
+    AspNetNews mainNews = _context.AspNetNews.OrderBy(n => n.Date).Where(n => n.MainNews).First();
 }
 
 
@@ -21,19 +23,18 @@
                                 color: #666;
                             }
                         </style>
-                        <a class="new2-link" href="/main-news/2021/01/2697/">
+                        <a class="new2-link" asp-controller="NewsDetails" asp-route-newsUrl="@mainNews.Url">
                             <div class="new__image-wrapper img-responsive" style="height:100%">
-                                <img src="/upload/pages/195/image_1611257247.JPG"
+                                <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Photo"
                                      class="new__main-image img-responsive news_icon_grow"
-                                     width="570" height="348" alt="" />
+                                      height="348" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Title" />
                             </div>
                         </a>
-                        <div class="new__main-date date">21 января, 16:26</div>
+                        <div class="new__main-date date">@mainNews.Date</div>
                         <a href="/main-news/2021/01/2697/">
-                            <div class="new__main-title">В Ленинском районе открыт новый корпус гимназии №1</div>
+                            <div class="new__main-title">@mainNews.Title</div>
                             <div class="new__main-text">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                <!--<a href="/main-news/2021/01/2697/" class="new__more">Читать&nbsp;далее</a>-->
+                                @Html.Raw(mainNews.PreviewText)
                             </div>
                         </a>
                     </div>
@@ -41,50 +42,20 @@
 
                 <!-- right column News-->
                 <div class="new__small-container col-xs-4">
-                    <div class="new__container clearfix">
-                        <a href="/main-news/2021/01/2696/" class="new__link">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="/upload/pages/195/image_1610898875.JPG" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="">
-                            </div>
-                            <div class="new__content-wrapper">
-                                <div class="new__title">Хроники Революции: в Гродно открыта первая с 70-х годов новая трамвайная линия </div>
-                                <div class="new__date date">16 января, 17:59</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="new__container clearfix">
-                        <a href="/main-news/2021/01/2695/" class="new__link">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="/upload/pages/195/img_1610484119.JPG" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="">
-                            </div>
-                            <div class="new__content-wrapper">
-                                <div class="new__title">Главный Кубок «Зимний вернисаж» получила команда скульпторов из Екатеринбурга за работу «Ты прекрасна»</div>
-                                <div class="new__date date">12 января, 18:19</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="new__container clearfix">
-                        <a href="/main-news/2020/12/2694/" class="new__link">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="/upload/pages/195/img_1609351494.JPG" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="">
-                            </div>
-                            <div class="new__content-wrapper">
-                                <div class="new__title">Прогуляться по новогодним маршрутам, посмотреть телемарафон или инсталляцию на набережной: как в Гродно встретить Новый год</div>
-                                <div class="new__date date">30 декабря, 11:23</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="new__container clearfix">
-                        <a href="/main-news/2020/12/2693/" class="new__link">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="/upload/pages/195/image_1608223471.jpg" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="">
-                            </div>
-                            <div class="new__content-wrapper">
-                                <div class="new__title">Дорожный сезон-2021: старт глобального обновления улиц Крисанова, Плеханова, Ленина и Маршала Жукова</div>
-                                <div class="new__date date">17 декабря, 17:52</div>
-                            </div>
-                        </a>
-                    </div>
+                    @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => !n.MainNews).OrderBy(n => n.Date))
+                    {
+                        <div class="new__container clearfix">
+                            <a asp-controller="NewsDetails" asp-route-newsUrl="@newItem.Url" class="new__link">
+                                <div class="new__image-wrapper img-responsive">
+                                    <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newItem.PreviewPhoto).Photo" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newItem.PreviewPhoto).Title">
+                                </div>
+                                <div class="new__content-wrapper">
+                                    <div class="new__title">@newItem.PreviewText</div>
+                                    <div class="new__date date">@newItem.Date.ToShortDateString()</div>
+                                </div>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -97,7 +68,7 @@
                          width="104" height="152">
                 </div>
                 <div class="head__text-wrapper">
-                    <h3 class="head__text">asd<br>asd<br>asd</h3>
+                    <h3 class="head__text">@Config.DirectorLastName<br>@Config.DirectorFirstName<br>@Config.DirectorDadName</h3>
                 </div>
             </div>
             <div class="prime__container">

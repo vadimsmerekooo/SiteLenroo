@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-SiteLenroo-7E3DBE9A-941B-4447-A9D7-84B864204EFB</UserSecretsId>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

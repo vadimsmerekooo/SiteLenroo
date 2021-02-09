@@ -6,12 +6,13 @@
 }
 
 <h5>@ViewData["Title"]</h5>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
 
-<form class="col-lg" id="form-addpost" enctype="multipart/form-data" method="post">
+<form class="col-lg" id="form-addpost" asp- asp-page-handler="Create" enctype="multipart/form-data" method="post">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" asp-for="Input.Title">Заголовок</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="first_input" placeholder="Заголовок" asp-for="Input.Title" maxlength="50">
+            <input type="text" class="form-control" id="first_input" placeholder="Заголовок" asp-for="Input.Title" maxlength="100">
         </div>
         <span asp-validation-for="Input.Title" class="col col-form-label text-danger"></span>
     </div>
@@ -21,22 +22,12 @@
         <div class="col-sm-10">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <div class="select">
-                <input class="form-control col-sm-10" type="hidden" name="">
-                <div class="select__head">Выберите изображение для превью...</div>
-                <ul class="select__list" style="display: none;">
-                    @*<li class="select__item">Стилизация select CSS</li>*@
-                    @foreach (AspNetPhoto photoItem in _context.AspNetPhoto.ToList())
-                    {
-                        <li class="select__item">
-                            <div style="display: flex;">
-                                <img src="@photoItem.Photo" height="50" width="50" />
-                                <h4 style="margin-left: 50px;">@photoItem.Title</h4>
-                                <h4 style="margin-left: 50px;">@photoItem.DateAdd</h4>
-                            </div>
-                        </li>
-                    }
+                <input class="form-control col-sm-10" type="hidden" name="photo" asp-for="Input.PreviewPhoto">
+                <div class="select__head" onclick="updatePhoto();">Выберите изображение для превью...</div>
+                <ul class="select__list" id="inputGroupSelectPhoto" style="display: none;">
                 </ul>
             </div>
+            <a target="_blank" asp-page="./UploadPhoto">Добавить фото</a>
         </div>
         <span asp-validation-for="Input.PreviewPhoto" class="col col-form-label text-danger"></span>
     </div>
@@ -57,27 +48,17 @@
         <span asp-validation-for="Input.Url" class="col col-form-label text-danger" text-danger></span>
     </div>
     <hr class="my-4 bg-light">
-    <!--Scripts CKEditor-->
-    <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
-    <!--Scripts CKEditor-->
+
+    <script src="~/skeditor/ckeditor4/ckeditor.js"></script>
+    <script src="~/skeditor/ckeditor5/ckeditor.js"></script>
+
     <div class="form-group-row">
-        <style>
-            .ck-editor__editable_inline {
-                min-height: 400px;
-                max-height: 500px;
-            }
-        </style>
-        <label class="col-sm-2 col-form-label">Полное описание</label>
-        <div id="editor"></div>
-        <span asp-validation-for="Input.Description" class="col col-form-label text-danger" text-danger></span>
+        <label class="col-sm-2 col-form-label">Description</label>
+        <textarea asp-for="Input.Description" name="editor" id="editor" rows="10" cols="80" style="min-height: 600px;"></textarea>
+        <span asp-validation-for="Input.Description" class="col col-form-label"></span>
         <script>
-            ClassicEditor
-                .create(document.querySelector('#editor'))
-                .catch(error => {
-                    console.error(error);
-                });
+            CKEDITOR.replace('editor');
         </script>
-        
     </div>
     <hr class="my-4 bg-light">
     <div class="form-group row">
@@ -85,15 +66,12 @@
         <div class="col-sm-10">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <div class="select">
-                <input class="form-control col-sm-10" type="hidden" name="">
-                <div class="select__head">Выберите Тег...</div>
-                <ul class="select__list" style="display: none;">
-                    @foreach (AspNetTag tagItem in _context.AspNetTag.ToList())
-                    {
-                        <li class="select__item">@tagItem.Tag</li>
-                    }
+                <input class="form-control col-sm-10" type="hidden" name="tag" asp-for="Input.Tag">
+                <div class="select__head" onclick="updateTags();">Выберите Тег...</div>
+                <ul class="select__list" id="inputGroupSelectTags" style="display: none;">
                 </ul>
             </div>
+            <a class="text-dark" target="_blank" asp-page="./AddedTag">Добавить новый тег</a>
         </div>
         <span asp-validation-for="Input.Tag" class="col col-form-label text-danger"></span>
     </div>
@@ -103,17 +81,20 @@
         <div class="col-sm-10">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <div class="select">
-                <input class="form-control col-sm-10" type="hidden" name="">
-                <div class="select__head">Выберите Категорию...</div>
-                <ul class="select__list" style="display: none;">
-                    @foreach (AspNetCategory catItem in _context.AspNetCategory.ToList())
-                    {
-                        <li class="select__item">@catItem.Category</li>
-                    }
+                <input class="form-control col-sm-10" type="hidden" name="cat" asp-for="Input.Category">
+                <div class="select__head" onclick="updateCategory();">Выберите Категорию...</div>
+                <ul class="select__list" id="inputGroupSelectCategory" style="display: none;">
                 </ul>
             </div>
+            <a class="text-dark" target="_blank" asp-page="./AddedCategory">Добавить новую категорию</a>
         </div>
         <span asp-validation-for="Input.Category" class="col col-form-label text-danger"></span>
+    </div>
+    <hr class="my-4 bg-light">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" asp-for="Input.MainNews">Главная новость</label>
+        <input type="checkbox" name="mainnews" asp-for="Input.MainNews" />
+        <span asp-validation-for="Input.MainNews" class="col col-form-label text-danger" text-danger></span>
     </div>
     <hr class="my-4 bg-light">
     <div class="form-group-row">
@@ -123,20 +104,3 @@
         </div>
     </div>
 </form>
-
-<environment exclude="Development">
-    <script src="~/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"
-            asp-fallback-src="~/Identity/lib/jquery-validation/dist/jquery.validate.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator"
-            crossorigin="anonymous"
-            integrity="sha384-rZfj/ogBloos6wzLGpPkkOr/gpkBNLZ6b6yLy4o+ok+t/SAKlL5mvXLr0OXNi1Hp">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js"
-            asp-fallback-src="~/Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
-            crossorigin="anonymous"
-            integrity="sha384-ifv0TYDWxBHzvAk2Z0n8R434FL1Rlv/Av18DXE43N/1rvHyOG4izKst0f2iSLdds">
-    </script>
-</environment>

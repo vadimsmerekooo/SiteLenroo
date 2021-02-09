@@ -1,0 +1,38 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.CategorysModel
+@{
+    ViewData["Title"] = "Список категорий";
+}
+<h5>@ViewData["Title"]</h5>
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Количество постов в категории</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AspNetCategory catItem in Model.categoryes)
+            {
+            <tr class="text-center">
+                <th scope="row">@catItem.Id</th>
+                <th scope="row">@catItem.Category</th>
+                <th scope="row">@Model._context.AspNetNews.Count(n => n.Category == catItem.Id) </th>
+                @if (@Model._context.AspNetNews.Count(n => n.Category == catItem.Id) == 0)
+                {
+                    <th scope="row"><a asp-page-handler="Delete" asp-route-catId="@catItem.Id" class="text-danger">Удалить</a></th>
+                }
+                else
+                {
+                    <th scope="row">Некоторые новости находятся в данной категории, и не может быть удален! Для удаления категории, удалите все новости, которые находятся в данной категории!</th>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

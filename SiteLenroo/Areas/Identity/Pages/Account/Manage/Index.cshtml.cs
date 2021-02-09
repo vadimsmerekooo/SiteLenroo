@@ -17,8 +17,7 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
         SiteLenrooContext2 _context = new SiteLenrooContext2();
-
-
+        
         public async Task<IActionResult> OnGetDeleteNewsAsync(int newsId)
         {
             if (!_context.AspNetNews.Any(n => n.Id == newsId))

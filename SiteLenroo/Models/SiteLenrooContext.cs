@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 using SiteLenroo.Models;
 
 namespace SiteLenroo
@@ -10,7 +13,7 @@ namespace SiteLenroo
         public SiteLenrooContext2()
         {
         }
-
+        
         public SiteLenrooContext2(DbContextOptions<SiteLenrooContext2> options)
            : base(options)
         {
@@ -34,7 +37,7 @@ namespace SiteLenroo
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=PROGRAMMER;Database=SiteLenroo;Trusted_Connection=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer(Config.ConnectionString);
             }
         }
 

@@ -16,8 +16,7 @@ namespace SiteLenroo.Areas.Identity
             builder.ConfigureServices((context, services) =>
             {
                 services.AddDbContext<SiteLenrooContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("SiteLenrooContextConnection")));
+                    options.UseSqlServer(Config.ConnectionString));
 
                 services.AddDefaultIdentity<LenrooUser>()
                     .AddRoles<IdentityRole>()

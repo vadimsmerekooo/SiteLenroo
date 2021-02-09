@@ -7,6 +7,7 @@ namespace SiteLenroo
 {
     public class Config
     {
+        public static string ConnectionString { get; set; }
         public static string Organization { get; set; }
         public static string OrganizationShort { get; set; }
         public static string Phone { get; set; }

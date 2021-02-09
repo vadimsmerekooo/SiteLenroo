@@ -1,7 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Главная";
+﻿@model SiteLenroo.Controllers.HomeController
+@{
     SiteLenrooContext2 _context = new SiteLenrooContext2();
-    AspNetNews mainNews = _context.AspNetNews.OrderBy(n => n.Date).Where(n => n.MainNews).First();
+    AspNetNews mainNews = _context.AspNetNews.OrderBy(n => n.Date).First(n => n.MainNews);
+
 }
 
 
@@ -23,7 +24,7 @@
                                 color: #666;
                             }
                         </style>
-                        <a class="new2-link" asp-controller="NewsDetails" asp-route-newsUrl="@mainNews.Url">
+                        <a class="new2-link" asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@mainNews.Url">
                             <div class="new__image-wrapper img-responsive" style="height:100%">
                                 <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Photo"
                                      class="new__main-image img-responsive news_icon_grow"
@@ -45,7 +46,7 @@
                     @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => !n.MainNews).OrderBy(n => n.Date))
                     {
                         <div class="new__container clearfix">
-                            <a asp-controller="NewsDetails" asp-route-newsUrl="@newItem.Url" class="new__link">
+                            <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@newItem.Url" class="new__link">
                                 <div class="new__image-wrapper img-responsive">
                                     <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newItem.PreviewPhoto).Photo" class="new__image img-responsive news_icon_grow" width="100" height="100" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newItem.PreviewPhoto).Title">
                                 </div>
@@ -116,26 +117,28 @@
             <h4 class="line"><a href="#">Новости города</a></h4>
             <div class="row new__city-container">
                 <!-- NEWS -->
-                <div class="new__container col-xs-12 col-sm-3">
-                    <div class="new__wrapper">
-                        <a href="#">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="/upload/pages/196/image_1611759861.JPG"
-                                     class="new__image img-responsive news_icon_grow" alt="">
-                            </div>
-                        </a>
-                        <div class="new__date date">Дата мероприятия</div>
-                        <a href="#">
-                            <h4 class="new__title">Весной в Гродно продолжится капитальный ремонт улицы Максима Горького</h4>
-                            <div class="new__text">Ремонт будет проводиться на участке от до КСМ. Подрядная организация приступит к работам после наступления подходящих погодных условий.</div>
-                            <!--<a href="/news/2021/01/27 12:19:00+05/54550-id/" class="new__more">Читать&nbsp;далее</a>-->
-                        </a>
+                @foreach(AspNetNews aspNetNews in _context.AspNetNews.OrderBy(n => n.Date).Where(n => !n.MainNews))
+                {
+                    <div class="new__container col-xs-12 col-sm-3">
+                        <div class="new__wrapper">
+                            <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@aspNetNews.Url">
+                                <div class="new__image-wrapper img-responsive">
+                                    <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == aspNetNews.PreviewPhoto).Photo"
+                                         class="new__image img-responsive news_icon_grow" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == aspNetNews.PreviewPhoto).Title">
+                                </div>
+                            </a>
+                            <div class="new__date date">@aspNetNews.Date</div>
+                            <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@aspNetNews.Url">
+                                <h4 class="new__title">@aspNetNews.Title</h4>
+                                <div class="new__text">@aspNetNews.PreviewText</div>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
 
             <div class="col-xs-12 text-center">
-                <a href="/news/" class="new__link">
+                <a asp-controller="News" class="new__link">
                     Архив новостей
                 </a>
             </div>
@@ -152,11 +155,14 @@
                 <div class="gallery__title gallery__line">Фотоальбомы</div>
                 <div class="gallery__preview-container clearfix">
                     <!--Photo-->
-                    <div class="gallery__preview gallery__preview-photo">
-                        <a href="#" class="gallery__preview-link" data-item-id="5">
-                            <img src="#" alt="" width="120" height="80">
-                        </a>
-                    </div>
+                    @foreach (AspNetPhoto aspNetPhoto in Model.dontUsePhoto)
+                    {
+                        <div class="gallery__preview gallery__preview-photo">
+                            <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhoto.Id">
+                                <img src="@aspNetPhoto.Photo" alt="@aspNetPhoto.Title" width="120" height="80">
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="gallery__control gallery__video text-center">

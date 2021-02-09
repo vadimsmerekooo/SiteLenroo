@@ -10,34 +10,20 @@ namespace SiteLenroo.Controllers
 {
     public class HomeController : Controller
     {
+        SiteLenrooContext2 _context = new SiteLenrooContext2();
+        public List<AspNetPhoto> dontUsePhoto = new List<AspNetPhoto>();
+
+        public HomeController()
+        {
+            foreach (AspNetPhoto aspNetPhoto in _context.AspNetPhoto)
+            {
+                if (_context.AspNetNews.Count(n => n.PreviewPhoto == aspNetPhoto.Id) == 0)
+                    dontUsePhoto.Add(aspNetPhoto);
+            }
+        }
         public IActionResult Index()
         {
             return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

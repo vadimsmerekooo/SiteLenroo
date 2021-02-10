@@ -1,4 +1,4 @@
-﻿@model List<AspNetNews>
+﻿@model IndexViewModel
 
 @{
     ViewData["Title"] = "Все новости";
@@ -10,7 +10,7 @@
         <span class="calendar__icon"></span>
     </div>
 
-    @foreach (AspNetNews newsItem in Model)
+    @foreach (AspNetNews newsItem in Model.News)
     {
         <div class="entry has-image clearfix">
             <div class="list__elem clearfix">
@@ -49,4 +49,29 @@
             }
         </ul>
     </div>
+</div>
+<div class="col-lg-12">
+    @if (Model.PageViewModel.TotalPages != 1)
+    {
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-controller="News"
+               asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Предыдущая страница
+            </a>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-controller="News"
+               asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Следующая страница
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+    }
 </div>

@@ -1,43 +1,43 @@
 ﻿@model List<AspNetPhoto>
 @{
     SiteLenrooContext2 _context = new SiteLenrooContext2();
-    AspNetNews mainNews = _context.AspNetNews.OrderBy(n => n.Date).First(n => n.MainNews);
+    AspNetNews mainNews = _context.AspNetNews.OrderByDescending(n => n.Date).First(n => n.MainNews);
     List<AspNetTag> aspNetTags = _context.AspNetTag.Take(6).ToList();
     List<AspNetNews> aspNetNewsList = new List<AspNetNews>();
     switch (aspNetTags.Count)
     {
         case 1:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
         case 2:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
         case 3:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
         case 4:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
         case 5:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
         case 6:
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderBy(n => n.Date).FirstOrDefault());
-            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[5].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderByDescending(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[5].Id).OrderByDescending(n => n.Date).FirstOrDefault());
             break;
     }
     ViewData["Title"] = "Главная";
@@ -81,7 +81,7 @@
 
                 <!-- right column News-->
                 <div class="new__small-container col-xs-4">
-                    @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => n.MainNews && n.Id != mainNews.Id).OrderBy(n => n.Date).Take(4))
+                    @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => n.MainNews && n.Id != mainNews.Id).OrderByDescending(n => n.Date).Take(4))
                     {
                         <div class="new__container clearfix">
                             <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@newItem.Url" class="new__link">
@@ -140,7 +140,7 @@
             <h4 class="line"><a href="#">Новости города</a></h4>
             <div class="row new__city-container">
                 <!-- NEWS -->
-                @foreach (AspNetNews aspNetNews in _context.AspNetNews.OrderBy(n => n.Date).Where(n => !n.MainNews).Take(8))
+                @foreach (AspNetNews aspNetNews in _context.AspNetNews.OrderByDescending(n => n.Date).Where(n => !n.MainNews).Take(8))
                 {
                     <div class="new__container col-xs-12 col-sm-3">
                         <div class="new__wrapper">
@@ -176,7 +176,7 @@
             <div class="gallery__control gallery__photo text-center">
                 <div class="gallery__title gallery__line">Фотоальбомы</div>
                 <div class="gallery__preview-container clearfix">
-                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => !p.Video).Take(6))
+                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => !p.Video).OrderByDescending(d => d.DateAdd).Take(6))
                     {
                         <div class="gallery__preview gallery__preview-photo">
                             <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhotos.Id">
@@ -191,7 +191,7 @@
             <div class="gallery__control gallery__video text-center">
                 <div class="gallery__title gallery__line">Видео</div>
                 <div class="gallery__preview-container clearfix">
-                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => p.Video).Take(6))
+                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => p.Video).OrderByDescending(d => d.DateAdd).Take(6))
                     {
                         <div class="gallery__preview gallery__preview-video gallery__preview-video--small">
                             <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhotos.Id">
@@ -203,7 +203,7 @@
             </div>
         </div>
         <div class="gallery__container owl-carousel">
-            @foreach (AspNetPhoto netPhoto in Model.Take(6))
+            @foreach (AspNetPhoto netPhoto in Model.OrderByDescending(d => d.DateAdd))
             {
                 if (netPhoto.Video)
                 {

@@ -1,15 +1,53 @@
-﻿@model SiteLenroo.Controllers.HomeController
+﻿@model List<AspNetPhoto>
 @{
     SiteLenrooContext2 _context = new SiteLenrooContext2();
     AspNetNews mainNews = _context.AspNetNews.OrderBy(n => n.Date).First(n => n.MainNews);
-
+    List<AspNetTag> aspNetTags = _context.AspNetTag.Take(6).ToList();
+    List<AspNetNews> aspNetNewsList = new List<AspNetNews>();
+    switch (aspNetTags.Count)
+    {
+        case 1:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+        case 2:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+        case 3:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+        case 4:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+        case 5:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+        case 6:
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[0].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[1].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[2].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[3].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[4].Id).OrderBy(n => n.Date).FirstOrDefault());
+            aspNetNewsList.Add(_context.AspNetNews.Where(n => !n.MainNews && n.Tag == aspNetTags[5].Id).OrderBy(n => n.Date).FirstOrDefault());
+            break;
+    }
+    ViewData["Title"] = "Главная";
 }
 
 
 <div class="row main__article">
     <div class="container__wrapper">
         <div class="col-xs-12 col-sm-9 new__main-container--grid">
-            <h4 class="line"><a href="/main-news/">Главное</a></h4>
+            <h4 class="line"><a asp-controller="News" asp-action="MainNews" asp-route-newsUrl="@mainNews.Url">Главное</a></h4>
 
             <div class="row news__main__container">
                 <!-- Main News-->
@@ -28,11 +66,11 @@
                             <div class="new__image-wrapper img-responsive" style="height:100%">
                                 <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Photo"
                                      class="new__main-image img-responsive news_icon_grow"
-                                      height="348" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Title" />
+                                     height="348" alt="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == mainNews.PreviewPhoto).Title" />
                             </div>
                         </a>
                         <div class="new__main-date date">@mainNews.Date</div>
-                        <a href="/main-news/2021/01/2697/">
+                        <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@mainNews.Url">
                             <div class="new__main-title">@mainNews.Title</div>
                             <div class="new__main-text">
                                 @Html.Raw(mainNews.PreviewText)
@@ -43,7 +81,7 @@
 
                 <!-- right column News-->
                 <div class="new__small-container col-xs-4">
-                    @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => !n.MainNews).OrderBy(n => n.Date))
+                    @foreach (AspNetNews newItem in _context.AspNetNews.Where(n => n.MainNews && n.Id != mainNews.Id).OrderBy(n => n.Date).Take(4))
                     {
                         <div class="new__container clearfix">
                             <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@newItem.Url" class="new__link">
@@ -72,40 +110,25 @@
                     <h3 class="head__text">@Config.DirectorLastName<br>@Config.DirectorFirstName<br>@Config.DirectorDadName</h3>
                 </div>
             </div>
-            <div class="prime__container">
-
-                <div class="prime__item">
-                    <div class="prime__wrapper">
-                        <a href="#" target="_blank" class="prime__link prime__icon prime__icon-75win" style="padding-top: 12px;">
-                            <h5 class="prime__text">Год памяти и славы</h5>
-                            <div class="prime__comment">
-
-                            </div>
-                        </a>
-                    </div>
+            <h4 class="line"><a href="#">Начальник отдела образования</a></h4>
+            <div class="head__container">
+                <div class="head__photo-wrapper">
+                    <img class="head__photo" src="~/images/Ta.jpg"
+                         width="104" height="152">
                 </div>
-                <div class="prime__item">
-                    <div class="prime__wrapper">
-                        <a href="#" target="_blank" class="prime__link prime__icon prime__icon-virus" style="padding-top: 12px;">
-                            <h5 class="prime__text">Коронавирус:</h5>
-                            <div class="prime__comment">
-                                официальная информация
-                            </div>
-                        </a>
-                    </div>
+                <div class="head__text-wrapper">
+                    <h3 class="head__text">Тарасевич<br>Оксана<br>Сергеевна</h3>
                 </div>
             </div>
-            <div class="text-center" style="padding-top: 20px">
-
-
-                <!--
-                 <div style="margin-bottom:20px;margin-top: 10px;">
-                    <iframe style="height: 170px"
-                            src="#"
-                            frameborder="0" allowfullscreen></iframe>
+            <h4 class="line"><a href="#">Начальник филиала</a></h4>
+            <div class="head__container">
+                <div class="head__photo-wrapper">
+                    <img class="head__photo" src="#"
+                         width="104" height="152">
                 </div>
-                -->
-                <div class='event__file'><a href='#' class='event__description'>План мероприятий, посвященных празднованию Нового 2021 года и Рождества Христова                                                                      </a></div>
+                <div class="head__text-wrapper">
+                    <h3 class="head__text">Мокрова<br>Елена<br>Станиславовна</h3>
+                </div>
             </div>
         </div>
     </div>
@@ -117,7 +140,7 @@
             <h4 class="line"><a href="#">Новости города</a></h4>
             <div class="row new__city-container">
                 <!-- NEWS -->
-                @foreach(AspNetNews aspNetNews in _context.AspNetNews.OrderBy(n => n.Date).Where(n => !n.MainNews))
+                @foreach (AspNetNews aspNetNews in _context.AspNetNews.OrderBy(n => n.Date).Where(n => !n.MainNews).Take(8))
                 {
                     <div class="new__container col-xs-12 col-sm-3">
                         <div class="new__wrapper">
@@ -147,20 +170,20 @@
     </div>
 
 </div>
-
 <div class="row">
     <div class="gallery clearfix">
         <div class="gallery__control-wrapper pull-right clearfix">
             <div class="gallery__control gallery__photo text-center">
                 <div class="gallery__title gallery__line">Фотоальбомы</div>
                 <div class="gallery__preview-container clearfix">
-                    <!--Photo-->
-                    @foreach (AspNetPhoto aspNetPhoto in Model.dontUsePhoto)
+                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => !p.Video).Take(6))
                     {
                         <div class="gallery__preview gallery__preview-photo">
-                            <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhoto.Id">
-                                <img src="@aspNetPhoto.Photo" alt="@aspNetPhoto.Title" width="120" height="80">
+                            <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhotos.Id">
+                                <img src="@aspNetPhotos.Photo" alt="" width="120" height="80">
+
                             </a>
+
                         </div>
                     }
                 </div>
@@ -168,113 +191,76 @@
             <div class="gallery__control gallery__video text-center">
                 <div class="gallery__title gallery__line">Видео</div>
                 <div class="gallery__preview-container clearfix">
-                    <!--Video-->
-                    <div class="gallery__preview gallery__preview-video gallery__preview-video--small">
-                        <a href="#" class="gallery__preview-link" data-item-id="0">
-                            <img src="/upload/pages/1000192/image_1611219779.jpg" alt="" width="120" height="80">
-                        </a>
-                    </div>
+                    @foreach (AspNetPhoto aspNetPhotos in Model.Where(p => p.Video).Take(6))
+                    {
+                        <div class="gallery__preview gallery__preview-video gallery__preview-video--small">
+                            <a href="#" class="gallery__preview-link" data-item-id="@aspNetPhotos.Id">
+                                <img src="/upload/pages/1000192/image_1611219779.jpg" alt="" width="120" height="80">
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
         <div class="gallery__container owl-carousel">
+            @foreach (AspNetPhoto netPhoto in Model.Take(6))
+            {
+                if (netPhoto.Video)
+                {
+                    <a class="owl-video" href="@netPhoto.Photo">
 
-            <a class="owl-video" href="#">
-
-            </a>
-            <div class="gallery__item">
-                <img src="#" alt="Строительство нового детского сада в микрорайоне Гранидичи, с компьютерным классом.">
-                <div class="gallery__overlay gallery__overlay--bottom">
-                    <div class="col-xs-7 gallery__text">Строительство нового детского сада в микрорайоне Гранидичи, с компьютерным классом.</div>
-                    <div class="col-xs-5 gallery__author text-right">Фото автора                                                                                                                                                                                                                                        </div>
-                </div>
-            </div>
-            <a class="owl-video" href="#">
-                <img src="/upload/pages/1000192/img_1509440520.PNG" alt="Мы платим налоги">
-            </a>
+                    </a>
+                }
+                else
+                {
+                    <div class="gallery__item">
+                        <img src="@netPhoto.Photo" alt="@netPhoto.Title" style="width: 100%; height: 100%;" />
+                        <div class="gallery__overlay gallery__overlay--bottom">
+                            <div class="col-xs-7 gallery__text">@netPhoto.Title</div>
+                            <div class="col-xs-5 gallery__author text-right">Фото                                                                                                                                                                                                                                         </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
-
 <div class="row main__article">
     <div class="new__rubric container__wrapper">
         <div class="col-xs-9 new__rubric-container">
             <div class="row">
-                <div class="new__container col-xs-4">
-                    <div class="new__wrapper">
-                        <div class="new__rubric-name">
-                            <span class="new__rubric-title">
-                                <a href="#" class="new__rubric-link">Культура</a>
-                            </span>
-                        </div>
-                        <a href="/news/2021/01/26 10:53:00+05/54541-id/">
-                            <div class="new__image-wrapper img-responsive">
-                                <img src="#" class="new__image img-responsive news_icon_grow"
-                                     width="277" height="156" alt="">
+                @foreach (AspNetNews newsItem in aspNetNewsList)
+                {
+                    @if (newsItem != null)
+                    {
+                        <div class="new__container col-xs-4">
+                            <div class="new__wrapper">
+                                <div class="new__rubric-name">
+                                    <span class="new__rubric-title">
+                                        <a asp-controller="News" asp-action="Search" asp-route-search="@_context.AspNetTag.FirstOrDefault(t => t.Id == newsItem.Tag).Tag" class="new__rubric-link">@_context.AspNetTag.FirstOrDefault(t => t.Id == newsItem.Tag).Tag</a>
+                                    </span>
+                                </div>
+                                <a asp-controller="News" asp-action="NewsDetails" asp-route-newsId="@newsItem.Id">
+                                    <div class="new__image-wrapper img-responsive">
+                                        <img src="@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newsItem.PreviewPhoto).Photo" class="new__image img-responsive news_icon_grow"
+                                             width="277" height="156" alt="">
+                                    </div>
+                                </a>
+                                <div class="new__date date">@newsItem.Date</div>
+                                <a asp-controller="News" asp-action="NewsDetails" asp-route-newsId="@newsItem.Id">
+                                    <h4 class="new__title">@newsItem.Title</h4>
+                                    <div class="new__text">@newsItem.PreviewText</div>
+                                </a>
                             </div>
-                        </a>
-                        <div class="new__date date">Дата</div>
-                        <a href="#">
-                            <h4 class="new__title">В Центральном выставочном зале Гродно проходит экспозиция «Рассвет Пушкина»</h4>
-                            <div class="new__text">Выставка «Рассвет Пушкина» занимает отдельный зал и представляет живописные работы, выполненные известными художниками в рамках районого конкурса.</div>
-                            <!--<a href="/news/2021/01/26 10:53:00+05/54541-id/" class="new__more">Читать&nbsp;далее</a>-->
-                        </a>
-                    </div>
-                </div>
+                        </div>
+                    }
+                }
             </div>
-            <div class="row interview__container">
-                <div class="col-xs-8">
-                    <h4 class="line"><a href="/actions/social-link/society/guest/postfactum/?id=397">Гость сайта</a></h4>
-                    <div class="interview clearfix">
-                        <div class="interview__photo-container">
-                            <a href="/actions/social-link/society/guest/postfactum/?id=397">
-                                <img src="/upload/pages/7331/image_1604641044.JPG" alt="Гость"
-                                     class="interview__photo" width="190" height="230">
-                            </a>
-                        </div>
-                        <div class="interview__quote-container">
-                            <a href="/actions/social-link/society/guest/postfactum/?id=397" class="interview__quote">«Цитата гостя»</a>
-                            <a href="/actions/social-link/society/guest/postfactum/?id=397" class="interview__link">
-                                <div class="interview__author">Имя гостя</div>
-                                <div class="interview__rank">Должность гостя</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-4">
-                    <h4 class="line"><a href="#">Другие интервью</a></h4>
-                    <div class="interview__other">
-                        <a href="#" class="interview__item clearfix">
-                            <div class="interview__photo">
-                                <img src="#"
-                                     alt="Имя гостя" class="img-responsive">
-                            </div>
-                            <div class="interview__text">
-                                <div class="interview__author">Имя гостя</div>
-                                <div class="interview__rank">Должность гостя</div>
-                            </div>
-                        </a>          
-                    </div>
-                </div>
-            </div>
-        </div><!-- /col-xs-9 -->
+        </div>
 
         <div class="col-xs-3 banner__container banner__container--right">
 
             <div class="banner banner__gosuslugi pull-right clearfix">
-
-                <div class="prime__item">
-                    <div class="prime__wrapper">
-                        <a href="#" target="_blank"
-                           class="prime__link prime__icon prime__icon-upr">
-                            <h5 class="prime__text">Управляем вместе</h5>
-                            <div class="prime__comment">
-                                Прими участие в программе развития Ленинского района
-                            </div>
-                        </a>
-                    </div>
-                </div>
 
                 <a href="https://www.investinbelarus.by/" target="_blank" class="banner-right__link">
                     <img class="banner-right__link-img" src="https://www.investinbelarus.by/include/logo_ru.svg"
@@ -294,65 +280,14 @@
                     <img class="banner-right__link-img" src="http://brsm.by/wp-content/themes/brsm/css/images/logo.jpg"
                          title="Интернет-портал Молодежь Беларуси">
                 </a>
-                @*<div class="widget__vk clearfix">
-            <div id="vk_groups"></div>
-            <script type="text/javascript" src="//vk.com/js/api/openapi.js?136"></script>
-            <script type="text/javascript">
-                VK.Widgets.Group("vk_groups", { mode: 3, width: '300', color3: '546E7A' }, 57433185);
-            </script>
-        </div>*@
+                <a href="https://nces.by/" target="_blank" class="banner-right__link">
+                    <img class="banner-right__link-img" src="https://www.tadviser.ru/images/9/9e/Nceu.png"
+                         title="Национальный центр электронных услуг">
+                </a>
             </div>
         </div>
     </div>
 </div>
-
 <div class="row">
-    <div class="col-xs-12">
-        <div class="owl-carousel banner__carousel">
-            <div class="banner__carousel-elem">
-                <a href="#" class="banner__carousel-link banner__phones"></a>
-            </div>
-            <div class="banner__carousel-elem">
-                <a href="#"
-                   class="banner__carousel-link banner__districtadministration"></a>
-            </div>
-            <div class="banner__carousel-elem">
-                <a href="#" class="banner__carousel-link banner__anticorruption"></a>
-            </div>
-            <div class="banner__carousel-elem">
-                <a href="#" class="banner__carousel-link banner__munservice"></a>
-            </div>
-            <div class="banner__carousel-elem">
-                <a href="#" class="banner__carousel-link banner__roadeequipment"
-                   rel="nofollow"></a>
-            </div>
-            <div class="banner__carousel-elem">
-                <a href="#" class="banner__carousel-link banner__manage" rel="nofollow" target="_blank"></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="banner__container">
-        <div class="banner banner--bottom">
-            <a href="#" class="banner__link banner__phones"></a>
-        </div>
-        <div class="banner banner--bottom">
-            <a href="#"
-               class="banner__link banner__districtadministration"></a>
-        </div>
-        <div class="banner banner--bottom">
-            <a href="#" class="banner__link banner__anticorruption"></a>
-        </div>
-        <div class="banner banner--bottom">
-            <a href="#" class="banner__link banner__munservice"></a>
-        </div>
-        <div class="banner banner--bottom">
-            <a href="#" class="banner__link banner__roadeequipment"
-               rel="nofollow"></a>
-        </div>
-        <div class="banner banner--bottom">
-            <a href="#"
-               class="banner__link banner__market" rel="nofollow" target="_blank"></a>
-        </div>
-    </div>
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ac6f3fa93daa86cdca1212099a1eb44aab3a0e441d75b6c6fd057d7bbc2b31250&amp;width=100%25&amp;height=334&amp;lang=ru_RU&amp;scroll=true"></script>
 </div>

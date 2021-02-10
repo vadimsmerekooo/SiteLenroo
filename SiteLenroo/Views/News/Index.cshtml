@@ -1,5 +1,52 @@
-﻿@{
-    ViewData["Title"] = "Все новости";
-}
+﻿@model List<AspNetNews>
 
-<h5>@ViewData["Title"]</h5>
+@{
+    ViewData["Title"] = "Все новости";
+    SiteLenrooContext2 _context = new SiteLenrooContext2();
+}
+<div class="col-xs-12 col-sm-9 article">
+    <div class="div__flex div__flex-center">
+        <h1>Новости Ленинского района</h1>
+        <span class="calendar__icon"></span>
+    </div>
+
+    @foreach (AspNetNews newsItem in Model)
+    {
+        <div class="entry has-image clearfix">
+            <div class="list__elem clearfix">
+                <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@newsItem.Url">
+                    <div class='list__preview'><img src='@_context.AspNetPhoto.FirstOrDefault(p => p.Id == newsItem.PreviewPhoto).Photo' class='list__preview-img news_icon_grow' /></div>
+                </a>
+                <div class="list__date">
+                    <a href="#" class="list__date-link">@newsItem.Date</a>
+                </div>
+                <div class="list__title">
+
+                    <a asp-controller="News" asp-action="NewsDetails" asp-route-newsUrl="@newsItem.Url" class='list__title-link'>@newsItem.Title</a>
+                </div>
+                <div class='list__short'>@newsItem.PreviewText</div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="col-xs-3 sidebar">
+    <div class="sidebar__container">
+
+
+        <div class="submenu__title">Все новости</div>
+        <ul id="section-nav" class="sidebar__list">
+            <li class="sidebar__elem">
+                <a class="sidebar__link active" rel="nofollow" asp-controller="News" asp-action="Index">Все новости</a>
+            </li>
+            @foreach (AspNetCategory catItem in _context.AspNetCategory)
+            {
+                <li>
+                    <a rel="nofollow" class="sidebar__link" asp-controller="News" asp-action="SearchNews" asp-route-search="@catItem.Category">
+                        @catItem.Category
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

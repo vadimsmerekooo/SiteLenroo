@@ -12,6 +12,7 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         public static string AddedNews => "AddedNews";
         public static string Photo => "Photo";
         public static string UploadPhoto => "UploadPhoto";
+        public static string UploadVideo => "UploadVideo";
         public static string Tags => "Tags";
         public static string AddedTag => "AddedTag";
         public static string Categorys => "Categorys";
@@ -22,6 +23,7 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         public static string AddedNewsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddedNews);
         public static string PhotoNavClass(ViewContext viewContext) => PageNavClass(viewContext, Photo);
         public static string UploadPhotoNavClass(ViewContext viewContext) => PageNavClass(viewContext, UploadPhoto);
+        public static string UploadVideoNavClass(ViewContext viewContext) => PageNavClass(viewContext, UploadVideo);
         public static string TagsNavClass(ViewContext viewContext) => PageNavClass(viewContext, Tags);
         public static string AddTagsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddedTag);
         public static string CategoryesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Categorys);

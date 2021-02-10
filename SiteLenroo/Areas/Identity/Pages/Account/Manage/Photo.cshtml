@@ -12,8 +12,9 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Изображение</th>
+                <th scope="col">Изображение/Видео</th>
                 <th scope="col">Описание</th>
+                <th scope="col">Видео</th>
                 <th scope="col">Дата</th>
                 <th scope="col"></th>
             </tr>
@@ -26,6 +27,7 @@
                     <th scope="row">@photoItem.Id</th>
                     <th scope="row"><img src="@photoItem.Photo" width="150px" height="100px" /></th>
                     <th scope="row">@photoItem.Title</th>
+                    <th scope="row">@photoItem.Video</th>
                     <th scope="row">@photoItem.DateAdd</th>
                     @if (Model._context.AspNetNews.Count(n => n.PreviewPhoto == photoItem.Id) == 0)
                     {

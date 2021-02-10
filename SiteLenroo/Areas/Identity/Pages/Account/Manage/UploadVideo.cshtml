@@ -1,0 +1,25 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.UploadVideoModel
+@{
+    ViewData["Title"] = "Добавление видео";
+}
+<h5>@ViewData["Title"]</h5>
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-page-handler="AddedPhoto" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Input.Path">Путь к видео (Url)</label>
+        <input type="text" name="url" class="form-control" />
+        <span asp-validation-for="Input.Path" class="col col-form-label text-danger"></span>
+    </div>
+    <hr class="my-4 bg-light" />
+
+    <div class="form-group">
+        <label asp-for="Input.Title">Описание</label>
+        <input class="form-control" asp-for="Input.Title" />
+        <span asp-validation-for="Input.Title" class="col col-form-label text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+</form>

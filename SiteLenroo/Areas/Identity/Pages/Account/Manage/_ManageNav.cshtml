@@ -26,6 +26,13 @@
     <li class="child-hr">
         <hr class="my-4">
     </li>
+
+    <li class="@ManageNavPages.ChangeBannerNavClass(ViewContext)">
+        <a asp-page="./ChangeBanner">Изменить баннер на главной странице сверху</a>
+    </li>
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
     <li class="@ManageNavPages.PhotoNavClass(ViewContext)">
         <a asp-page="Photo">Фото и видео</a>
         <ul class="nav nav-pills nav-stacked head__text-link child-ul">
@@ -58,6 +65,12 @@
                 <a asp-page="./AddedCategory">Добавить категорию</a>
             </li>
         </ul>
+    </li>
+    <li class="child-hr">
+        <hr class="my-4">
+    </li>
+    <li class="@ManageNavPages.TreeMenuNavClass(ViewContext)">
+        <a asp-page="TreeMenu">Меню гланого меню</a>
     </li>
     <li class="child-hr">
         <hr class="my-4">

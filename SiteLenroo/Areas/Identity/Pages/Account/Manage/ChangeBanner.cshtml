@@ -1,0 +1,19 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.ChangeBannerModel
+@{
+    ViewData["Title"] = "Изменение главного банера";
+}
+<h5>@ViewData["Title"]</h5>
+
+<div class="row">
+    <h3>На данной странице, можно изменить фон, приведенного ниже, баннера. Новый фон должен соответсвовать разрешению 1280px * 129px!!! Или выбрать из предыдущих!</h3>
+    <img src="~/vs/2017/img/decoration/banner.bmp" style="width: 100%;"/>
+</div>
+
+<form asp-page-handler="Create" method="post">
+    <div class="form-group">
+        <label for="name">Новый фон</label>
+        <input name="name" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

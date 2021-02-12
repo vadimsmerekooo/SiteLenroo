@@ -8,7 +8,8 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {
-        public static string Index => "Index";
+        public static string Index => "Index"; 
+        public static string ChangeBanner => "ChangeBanner";
         public static string AddedNews => "AddedNews";
         public static string Photo => "Photo";
         public static string UploadPhoto => "UploadPhoto";
@@ -17,9 +18,11 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         public static string AddedTag => "AddedTag";
         public static string Categorys => "Categorys";
         public static string AddedCategory => "AddedCategory";
+        public static string TreeMenu => "TreeMenu";
         public static string Roles => "Roles";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+        public static string ChangeBannerNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangeBanner);
         public static string AddedNewsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddedNews);
         public static string PhotoNavClass(ViewContext viewContext) => PageNavClass(viewContext, Photo);
         public static string UploadPhotoNavClass(ViewContext viewContext) => PageNavClass(viewContext, UploadPhoto);
@@ -29,6 +32,7 @@ namespace SiteLenroo.Areas.Identity.Pages.Account.Manage
         public static string CategoryesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Categorys);
         public static string AddCategoryesNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddedCategory);
         public static string RolesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Roles);
+        public static string TreeMenuNavClass(ViewContext viewContext) => PageNavClass(viewContext, TreeMenu);
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

@@ -20,7 +20,7 @@
             <div class="col-xs-9 col-sm-5">
                 <a href="/" class="header__logo">
                     <div class="header__logo-text">
-                        Центр для обеспечения деятельности учреждений образования г.Гродно
+                        Центр для обеспечения деятельности учреждений сферы образования г.Гродно
                     </div>
                 </a>
             </div>
@@ -44,25 +44,14 @@
 
                 <div id="section-nav" class="col-xs-12 header__burger-menu-elem">
                     <div class="submenu__background">
-                        <a class="submenu__elem"
-                           href="#" title="О Гродно">
-                            О Гродно
-                        </a>                    <a class="submenu__elem"
-                                                   href="#" title="Власть">
-                            Власть
-                        </a>                    <a class="submenu__elem"
-                                                   href="#" title="Экономика">
-                            Экономика
-                        </a>                    <a class="submenu__elem"
-                                                   href="#" title="Одно окно">
-                            Одно окно
-                        </a>                    <a class="submenu__elem"
-                                                   href="#" title="Образование">
-                            Образование
-                        </a>                    <a class="submenu__elem"
-                                                   href="#" title="Гражданам">
-                            Гражданам
-                        </a>
+                        @foreach (AspNetTreeMain item in mainTreelist)
+                        {
+                            <a class="submenu__elem"
+                               id="@item.Id"
+                               href="@item.Url" title="@item.Title">
+                                @item.Title
+                            </a>
+                        }     
                     </div>
                 </div>
             </div>

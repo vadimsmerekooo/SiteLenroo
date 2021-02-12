@@ -1,0 +1,73 @@
+﻿@page
+@model SiteLenroo.Areas.Identity.Pages.Account.Manage.TreeMenuModel
+@{
+    ViewData["Title"] = "Список гланого меню";
+    List<AspNetTree> treeList = new SiteLenrooContext2().AspNetTree.ToList();
+    List<AspNetTreeMain> mainTreelist = new SiteLenrooContext2().AspNetTreeMain.ToList();
+}
+
+<h5>@ViewData["Title"]</h5>
+
+<ul id="myUL">
+    @foreach (AspNetTreeMain mainTreeItem in mainTreelist)
+    {
+        @if (treeList.Any(t => t.ParentMain == mainTreeItem.Id && t.Parent == 0))
+        {
+            <li>
+                <span class="caret-tree">@mainTreeItem.Title</span> <a href="@mainTreeItem.Url" title="@mainTreeItem.Title">                   Перейти на страницу </a>
+
+                <ul class="nested-tree">
+                    @foreach (AspNetTree treeItem in treeList.Where(t => t.ParentMain == mainTreeItem.Id && t.Parent == 0))
+                    {
+                        @if (treeList.Any(t => t.Parent == treeItem.Id))
+                        {
+                            <li>
+                                <span class="caret-tree">@treeItem.Title</span><a href="@treeItem.Url" title="@treeItem.Title">                   Перейти на страницу </a>
+                                <ul class="nested-tree">
+                                    @foreach (var item in treeList.Where(t => t.Parent == treeItem.Id))
+                                    {
+                                        if (treeList.Any(t => t.Parent == item.Id))
+                                        {
+                                            <li>
+                                                <span class="caret-tree">@item.Title</span><a href="@item.Url" title="@item.Title">                   Перейти на страницу </a>
+                                                <ul class="nested-tree">
+                                                    @foreach (var item2 in treeList.Where(t => t.Parent == item.Id))
+                                                    {
+                                                        <li>
+                                                            <a href="@item2.Url" title="@item2.Title">@item2.Title</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="@item.Url" title="@item.Title">@item.Title</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@treeItem.Url" title="@treeItem.Title">@treeItem.Title</a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <hr />
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@mainTreeItem.Url" title="@mainTreeItem.Title">@mainTreeItem.Title</a>
+                <hr />
+            </li>
+        }
+    }
+
+</ul>
